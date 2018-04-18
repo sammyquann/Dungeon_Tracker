@@ -6,23 +6,20 @@
         <meta charset="UTF-8">
         <title>Dungeon Tracker</title>
     </head>
-    <body>
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container-fluid">
-                <h1 class="DT-Title"><b>D</b>ungeon <b>T</b>racker</h1>
-            </div>
-        </div>
+    <body class="fill-background">
+        <div include-html="navbar.html"></div>
 
-        Characters here?<br>
+        Characters here? --- no, on characters page obviously!!<br>
         Download the sheets file to a local directory, then have this
         program read from it. When stats are edited in program, update
         the file, and vice versa.<br>
         The stats can be displayed in a cool way, like a progress bar for
         health and maybe a chart for attributes.
 
+        <script src="../scripts/utilities.js"></script>
         <script>
-          // You can also require other files to run in this process
-          require('../renderer.js')
+            require('../scripts/renderer.js')
+            includeHTML();
         </script>
     </body>
 </html>

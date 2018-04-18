@@ -1,0 +1,49 @@
+html, body {
+    height: 100%;
+}
+
+.col-sm-2 {
+    padding: 20px 15px 10px 30px !important;
+}
+
+.col-sm-10 {
+    padding: 20px 30px 10px 15px !important;
+}
+
+.item-character {
+    width: 100%;
+    background-color: #D8D8D8;
+    border-style: solid;
+    border-color: #000000;
+    border-radius: 4px;
+    border-width: 1.5px;
+    font-size: 1.5em;
+    text-align: center;
+
+}
+
+.item-new-character {
+    width: 100%;
+    background-color: #20B020;
+    border-style: solid;
+    border-color: #000000;
+    border-radius: 4px;
+    border-width: 1.5px;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.item-new-character:hover {
+    background-color: #10A010;
+    cursor: pointer;
+}
+
+.new-character-options {
+    text-align: center;
+}
+
+.new-character-btn {
+    margin: 10px;
+}

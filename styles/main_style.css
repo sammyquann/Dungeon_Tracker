@@ -6,6 +6,26 @@ b {
     color: #C02020 !important;
 }
 
+.jumbotron {
+    margin-bottom: 0 !important;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+    background-color: #D8D8D8 !important;
+}
+
 .DT-Title {
     padding-left: 2em;
+    font-size: 4.5em !important;
+}
+
+.fill-background {
+    background-color: #B8B8B8;
+}
+
+.content-block {
+    height: 100%;
+    background-color: #EEEEEE;
+    box-shadow: 10px 10px 8px 0px #888888;
+    border-style: groove;
+    padding: 10px;
 }
