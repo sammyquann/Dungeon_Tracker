@@ -47,3 +47,7 @@ html, body {
 .new-character-btn {
     margin: 10px;
 }
+
+.character-form {
+    text-align: center;
+}
