@@ -14,3 +14,14 @@ document.getElementById("new_character_btn").addEventListener("click", function(
         includeHTML();
     });
 });
+
+function validate() {
+    let inputs = document.getElementsByTagName("input");
+    for (idx=0; idx<inputs.length; idx++) {
+        if (inputs[idx].value == "") {
+            document.getElementById("submit_msg").innerHTML = "Please fill in all of the fields.";
+            return false;
+        }
+    }
+    return true;
+}

@@ -10,34 +10,18 @@ html, body {
     padding: 20px 30px 10px 15px !important;
 }
 
-.item-character {
-    width: 100%;
-    background-color: #D8D8D8;
-    border-style: solid;
-    border-color: #000000;
-    border-radius: 4px;
-    border-width: 1.5px;
-    font-size: 1.5em;
-    text-align: center;
-
-}
-
 .item-new-character {
     width: 100%;
-    background-color: #20B020;
-    border-style: solid;
-    border-color: #000000;
-    border-radius: 4px;
-    border-width: 1.5px;
-    font-size: 2em;
+    font-size: 1.25em !important;
     text-align: center;
     margin-bottom: 0.5em;
     font-weight: bold;
+    padding-top: 0.75em !important;
+    padding-bottom: 0.75em !important;
 }
 
-.item-new-character:hover {
-    background-color: #10A010;
-    cursor: pointer;
+.push-down {
+    margin-top: 3em;
 }
 
 .new-character-options {

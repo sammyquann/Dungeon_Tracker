@@ -13,6 +13,10 @@ b {
     background-color: #D8D8D8 !important;
 }
 
+.error-msg {
+    color: #C02020;
+}
+
 .DT-Title {
     padding-left: 2em;
     font-size: 4.5em !important;
@@ -28,4 +32,9 @@ b {
     box-shadow: 10px 10px 8px 0px #888888;
     border-style: groove;
     padding: 10px;
+}
+
+.center_div{
+    margin: 0 auto;
+    width: 80%
 }
