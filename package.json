@@ -21,6 +21,7 @@
     "less": "^3.0.1"
   },
   "dependencies": {
+    "chart.js": "^2.7.2",
     "file-save": "^0.2.0"
   }
 }

@@ -1,12 +1,16 @@
+/*  ======================================================
+    =   Require packages & constants
+    ====================================================== */
 var fs = require('fs');
+var Chart = require("chart.js");
 
 let CHAR_PATH = "C:/repos/Dungeon_Tracker/presets/new_preset/characters.json";
-
-loadCharacterList();
 
 /*  ======================================================
     =   Inject html content into page
     ====================================================== */
+loadCharacterList();
+
 document.getElementById("new_character_btn").addEventListener("click", function() {
     let body = document.getElementById("content_body");
     body.innerHTML =
@@ -21,6 +25,9 @@ document.getElementById("new_character_btn").addEventListener("click", function(
     });
 });
 
+/*  ======================================================
+    =   Validate new character form
+    ====================================================== */
 function validate() {
     let inputs = document.getElementsByTagName("input");
     for (idx=0; idx<inputs.length; idx++) {
@@ -33,14 +40,16 @@ function validate() {
     return true;
 }
 
+/*  ======================================================
+    =   Append input character details into file as JSON
+    ====================================================== */
 function generateCharacterJSON(attributes) {
-    /* just throw all the attributes into a json, and add that to the characters.json for the current preset */
     let char = {
         "name": document.getElementById("form_name").value,
         "level": document.getElementById("form_lvl").value,
         "hp": document.getElementById("form_hp").value,
         "ac": document.getElementById("form_ac").value,
-        "proficiency": document.getElementById("form_prof").value,
+        "alignment": document.getElementById("form_align").value,
         "strength": document.getElementById("form_str").value,
         "dexterity": document.getElementById("form_dex").value,
         "constitution": document.getElementById("form_con").value,
@@ -59,27 +68,100 @@ function generateCharacterJSON(attributes) {
     }
 }
 
+/*  ======================================================
+    =   Load a button for each saved character
+    ====================================================== */
 function loadCharacterList() {
-    let char_list = JSON.parse(fs.readFileSync(CHAR_PATH, 'utf-8'));
-    let char_container = document.getElementById("character_list");
-    char_container.innerHTML = "";
-    for (var idx in char_list) {
-        let name = char_list[idx].name;
-        char_container.innerHTML += "<div id='" + name + "' onclick='createCharacterItem(" + JSON.stringify(char_list[idx])
-            + ")' class='btn btn-outline-primary w-100'>" + name + "</div>";
+    let raw_chars = fs.readFileSync(CHAR_PATH, 'utf-8');
+    if (raw_chars.length > 0) {
+        let char_list = JSON.parse(raw_chars);
+        let char_container = document.getElementById("character_list");
+        char_container.innerHTML = "";
+        for (var idx in char_list) {
+            let name = char_list[idx].name;
+            char_container.innerHTML += "<div id='" + name + "' onclick='createCharacterItem(" + JSON.stringify(char_list[idx])
+                + ")' class='btn btn-outline-primary w-100'>" + name + "</div>";
+        }
     }
 }
 
+/*  ======================================================
+    =   Generate character details page
+    ====================================================== */
 function createCharacterItem(char) {
-    console.log(char);
-    /* Generate character details page HTML and fill it with data form the "char" JSON object */
     document.getElementById("content_body").innerHTML =
         '<div class="row"><h2 class="w-100">'+char.name+'</h2></div>'
-        + '<div class="row w-100"><div class="progress w-75"><div class="progress-bar" role="progressbar" style="width: 100%" '
-        + ' aria-valuenow="' + char.hp + '" aria-valuemin="0" aria-valuemax="'+ char.hp + '"></div></div></div>'
+        + '<div class="row w-100 character-hp"><div class="progress center-div hp-bar hp-container"><div class="progress-bar bg-success hp-bar"'
+        + ' role="progressbar" style="width: 100%" aria-valuenow="' + char.hp + '" aria-valuemin="0" aria-valuemax="'
+        + char.hp + '">100%</div></div></div>'
         + '<div class="row w-100">'
-            + '<div class="col-sm-4"><h3 id="char_lvl"></h3></div>'
-            + '<div class="col-sm-4"><h3 id="char_ac"></h3></div>'
-            + '<div class="col-sm-4"><h3 id="char_prof"></h3></div>'
-        + '</div>';
+            + '<div class="col-sm-4"><h3 id="char_lvl"><img src="../images/level_icon/res/mipmap-hdpi/level_icon.png">' + char.level + '</h3></div>'
+            + '<div class="col-sm-4"><h3 id="char_ac"><img src="../images/ac_icon/res/mipmap-hdpi/ac_icon.png">' + char.ac + '</h3></div>'
+            + '<div class="col-sm-4"><h3 id="char_prof"><img src="../images/alignment_icon/res/mipmap-hdpi/alignment_icon.png">' + char.alignment + '</h3></div>'
+        + '</div>'
+        + '<div class="row w-100">'
+            + '<div class="col-sm-4">'
+                + '<canvas id="attribute_chart" width="400" height="400"></canvas>'
+            + '</div><div class="col-sm-2">'
+                + '<h3>Skills</h3>'
+                + '<span class="row w-100">Acrobatics: ' + modifier(char.dexterity) + '</span>'
+                + '<span class="row w-100">Animal Handling: ' + modifier(char.wisdom) + '</span>'
+                + '<span class="row w-100">Arcana: ' + modifier(char.intelligence) + '</span>'
+                + '<span class="row w-100">Athletics: ' + modifier(char.strength) + '</span>'
+                + '<span class="row w-100">Deception: ' + modifier(char.charisma) + '</span>'
+                + '<span class="row w-100">History: ' + modifier(char.intelligence) + '</span>'
+                + '<span class="row w-100">Insight: ' + modifier(char.wisdom) + '</span>'
+                + '<span class="row w-100">Intimidation: ' + modifier(char.charisma) + '</span>'
+                + '<span class="row w-100">Investigation: ' + modifier(char.intelligence) + '</span>'
+                + '<span class="row w-100">Medicine: ' + modifier(char.wisdom) + '</span>'
+                + '<span class="row w-100">Nature: ' + modifier(char.intelligence) + '</span>'
+                + '<span class="row w-100">Perception: ' + modifier(char.wisdom) + '</span>'
+                + '<span class="row w-100">Performance: ' + modifier(char.charisma) + '</span>'
+                + '<span class="row w-100">Persuasion: ' + modifier(char.charisma) + '</span>'
+                + '<span class="row w-100">Religion: ' + modifier(char.intelligence) + '</span>'
+                + '<span class="row w-100">Sleight of Hand: ' + modifier(char.dexterity) + '</span>'
+                + '<span class="row w-100">Stealth: ' + modifier(char.dexterity) + '</span>'
+                + '<span class="row w-100">Survival: ' + modifier(char.wisdom) + '</span>'
+            + '</div><div class="col-sm-6">'
+        + '</div></div>';
+    /* Populate the polar area chart */
+    let data = {
+        datasets: [{
+            data: [char.strength, char.dexterity, char.constitution, char.intelligence, char.wisdom, char.charisma],
+            backgroundColor: [
+                "rgba(255, 0, 0, 0.5)",
+                "rgba(100, 255, 0, 0.5)",
+                "rgba(255, 255, 0, 0.5)",
+                "rgba(0, 0, 255, 0.5)",
+                "rgba(255, 0, 255, 0.5)",
+                "rgba(0, 255, 255, 0.5)"
+              ]
+        }],
+        labels: ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+    };
+    let options = {
+        legend: {
+            display: false,
+            position: "left"
+        },
+        title: {
+            display: true,
+            text: 'Attributes',
+            fontSize: 24
+        }
+    };
+    let ctx = document.getElementById("attribute_chart");
+    let chart = new Chart(ctx, {
+        data: data,
+        type: "polarArea",
+        options: options
+    });
+}
+
+function modifier(attribute) {
+    let value = (~~((attribute - 10) / 2));
+    if (value >= 0) {
+        value = "+" + value;
+    }
+    return value;
 }
