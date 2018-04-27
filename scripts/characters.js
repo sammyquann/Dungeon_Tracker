@@ -47,7 +47,8 @@ function generateCharacterJSON(attributes) {
     let char = {
         "name": document.getElementById("form_name").value,
         "level": document.getElementById("form_lvl").value,
-        "hp": document.getElementById("form_hp").value,
+        "max_hp": document.getElementById("form_hp").value,
+        "curr_hp": document.getElementById("form_hp").value,
         "ac": document.getElementById("form_ac").value,
         "alignment": document.getElementById("form_align").value,
         "strength": document.getElementById("form_str").value,
@@ -80,7 +81,7 @@ function loadCharacterList() {
         for (var idx in char_list) {
             let name = char_list[idx].name;
             char_container.innerHTML += "<div id='" + name + "' onclick='createCharacterItem(" + JSON.stringify(char_list[idx])
-                + ")' class='btn btn-outline-primary w-100'>" + name + "</div>";
+                + ")' class='btn btn-outline-primary w-100 character-btn'>" + name + "</div>";
         }
     }
 }
@@ -91,10 +92,10 @@ function loadCharacterList() {
 function createCharacterItem(char) {
     document.getElementById("content_body").innerHTML =
         '<div class="row"><h2 class="w-100">'+char.name+'</h2></div>'
-        + '<div class="row w-100 character-hp"><div class="progress center-div hp-bar hp-container"><div class="progress-bar bg-success hp-bar"'
-        + ' role="progressbar" style="width: 100%" aria-valuenow="' + char.hp + '" aria-valuemin="0" aria-valuemax="'
-        + char.hp + '">100%</div></div></div>'
-        + '<div class="row w-100">'
+        + '<div class="row w-100 character-hp"><div class="progress center-div hp-bar hp-container shadow"><div id="hp_bar" '
+        + 'class="progress-bar bg-success hp-bar" role="progressbar" aria-valuenow="' + char.curr_hp 
+        + '" aria-valuemin="0" aria-valuemax="' + char.max_hp + '">' + char.curr_hp + '/' + char.max_hp + '</div></div></div>'
+        + '<div class="row w-100 stat-row">'
             + '<div class="col-sm-4"><h3 id="char_lvl"><img src="../images/level_icon/res/mipmap-hdpi/level_icon.png">' + char.level + '</h3></div>'
             + '<div class="col-sm-4"><h3 id="char_ac"><img src="../images/ac_icon/res/mipmap-hdpi/ac_icon.png">' + char.ac + '</h3></div>'
             + '<div class="col-sm-4"><h3 id="char_prof"><img src="../images/alignment_icon/res/mipmap-hdpi/alignment_icon.png">' + char.alignment + '</h3></div>'
@@ -102,29 +103,36 @@ function createCharacterItem(char) {
         + '<div class="row w-100">'
             + '<div class="col-sm-4">'
                 + '<canvas id="attribute_chart" width="400" height="400"></canvas>'
-            + '</div><div class="col-sm-2">'
-                + '<h3>Skills</h3>'
-                + '<span class="row w-100">Acrobatics: ' + modifier(char.dexterity) + '</span>'
-                + '<span class="row w-100">Animal Handling: ' + modifier(char.wisdom) + '</span>'
-                + '<span class="row w-100">Arcana: ' + modifier(char.intelligence) + '</span>'
-                + '<span class="row w-100">Athletics: ' + modifier(char.strength) + '</span>'
-                + '<span class="row w-100">Deception: ' + modifier(char.charisma) + '</span>'
-                + '<span class="row w-100">History: ' + modifier(char.intelligence) + '</span>'
-                + '<span class="row w-100">Insight: ' + modifier(char.wisdom) + '</span>'
-                + '<span class="row w-100">Intimidation: ' + modifier(char.charisma) + '</span>'
-                + '<span class="row w-100">Investigation: ' + modifier(char.intelligence) + '</span>'
-                + '<span class="row w-100">Medicine: ' + modifier(char.wisdom) + '</span>'
-                + '<span class="row w-100">Nature: ' + modifier(char.intelligence) + '</span>'
-                + '<span class="row w-100">Perception: ' + modifier(char.wisdom) + '</span>'
-                + '<span class="row w-100">Performance: ' + modifier(char.charisma) + '</span>'
-                + '<span class="row w-100">Persuasion: ' + modifier(char.charisma) + '</span>'
-                + '<span class="row w-100">Religion: ' + modifier(char.intelligence) + '</span>'
-                + '<span class="row w-100">Sleight of Hand: ' + modifier(char.dexterity) + '</span>'
-                + '<span class="row w-100">Stealth: ' + modifier(char.dexterity) + '</span>'
-                + '<span class="row w-100">Survival: ' + modifier(char.wisdom) + '</span>'
-            + '</div><div class="col-sm-6">'
-        + '</div></div>';
+            + '</div><div class="col-sm-4">'
+            + '</div><div class="col-sm-4">'
+                + '<h3>Skills (no proficiency)</h3>'
+                + '<div class="row"><div class="col-sm-6">'
+                    + '<ul class="list-group">'
+                        + '<li class="list-group-item">Acrobatics: ' + modifier(char.dexterity) + '</li>'
+                        + '<li class="list-group-item">Animal Handling: ' + modifier(char.wisdom) + '</li>'
+                        + '<li class="list-group-item">Arcana: ' + modifier(char.intelligence) + '</li>'
+                        + '<li class="list-group-item">Athletics: ' + modifier(char.strength) + '</li>'
+                        + '<li class="list-group-item"><b>Deception: ' + modifier(char.charisma) + '</b></li>'
+                        + '<li class="list-group-item">History: ' + modifier(char.intelligence) + '</li>'
+                        + '<li class="list-group-item">Insight: ' + modifier(char.wisdom) + '</li>'
+                        + '<li class="list-group-item">Intimidation: ' + modifier(char.charisma) + '</li>'
+                        + '<li class="list-group-item">Investigation: ' + modifier(char.intelligence) + '</li>'
+                    + '</ul>'
+                + '</div><div class="col-sm-6">'
+                    + '<ul class="list-group">'
+                        + '<li class="list-group-item">Medicine: ' + modifier(char.wisdom) + '</li>'
+                        + '<li class="list-group-item">Nature: ' + modifier(char.intelligence) + '</li>'
+                        + '<li class="list-group-item">Perception: ' + modifier(char.wisdom) + '</li>'
+                        + '<li class="list-group-item">Performance: ' + modifier(char.charisma) + '</li>'
+                        + '<li class="list-group-item">Persuasion: ' + modifier(char.charisma) + '</li>'
+                        + '<li class="list-group-item">Religion: ' + modifier(char.intelligence) + '</li>'
+                        + '<li class="list-group-item">Sleight of Hand: ' + modifier(char.dexterity) + '</li>'
+                        + '<li class="list-group-item">Stealth: ' + modifier(char.dexterity) + '</li>'
+                        + '<li class="list-group-item">Survival: ' + modifier(char.wisdom) + '</li>'
+            + '</ul></div></div></div>'
+        + '</div>';
     /* Populate the polar area chart */
+    updateHP(char);
     let data = {
         datasets: [{
             data: [char.strength, char.dexterity, char.constitution, char.intelligence, char.wisdom, char.charisma],
@@ -158,10 +166,30 @@ function createCharacterItem(char) {
     });
 }
 
+/*  ======================================================
+    =   Calculate the modifier for a given attribute value
+    ====================================================== */
 function modifier(attribute) {
     let value = (~~((attribute - 10) / 2));
     if (value >= 0) {
         value = "+" + value;
     }
     return value;
+}
+
+/*  ======================================================
+    =   Calculate the HP % and update the HP display
+    ====================================================== */
+function updateHP(char) {
+    let percent = char.curr_hp / char.max_hp * 100;
+    document.getElementById("hp_bar").setAttribute("style", 'width: ' + percent + '%');
+    if (percent < 20) {
+        document.getElementById("hp_bar").setAttribute("class", 'progress-bar bg-danger hp-bar');
+    }
+    else if (percent < 50) {
+        document.getElementById("hp_bar").setAttribute("class", 'progress-bar bg-warning hp-bar');
+    }
+    else {
+        document.getElementById("hp_bar").setAttribute("class", 'progress-bar bg-success hp-bar');
+    }
 }
