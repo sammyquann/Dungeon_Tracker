@@ -7,7 +7,7 @@ h2 {
 }
 
 b {
-    color: #C02020 !important;
+    color: #2020C0 !important;
 }
 
 .jumbotron {
@@ -45,4 +45,21 @@ b {
 
 .clearfix {
     overflow: auto;
+}
+
+.center-horizontal {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+.fill-right {
+    padding-right: 0 !important;
+}
+
+.fill-left {
+    padding-left: 0 !important;
 }

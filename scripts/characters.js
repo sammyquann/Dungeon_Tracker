@@ -4,7 +4,11 @@
 var fs = require('fs');
 var Chart = require("chart.js");
 
-let CHAR_PATH = "C:/repos/Dungeon_Tracker/presets/new_preset/characters.json";
+const CHAR_PATH = "C:/repos/Dungeon_Tracker/presets/new_preset/characters.json";
+const FORM_SKILLS = ["form_acrobatics", "form_animalhandling", "form_arcana", "form_athletics", "form_deception",
+                    "form_history", "form_insight", "form_intimidation", "form_investigation", "form_medicine",
+                    "form_nature", "form_perception", "form_performance", "form_persuasion", "form_religion",
+                    "form_sleightofhand", "form_stealth", "form_survival"]; 
 
 /*  ======================================================
     =   Inject html content into page
@@ -45,26 +49,53 @@ function validate() {
     ====================================================== */
 function generateCharacterJSON(attributes) {
     let char = {
-        "name": document.getElementById("form_name").value,
-        "level": document.getElementById("form_lvl").value,
-        "max_hp": document.getElementById("form_hp").value,
-        "curr_hp": document.getElementById("form_hp").value,
-        "ac": document.getElementById("form_ac").value,
-        "alignment": document.getElementById("form_align").value,
-        "strength": document.getElementById("form_str").value,
-        "dexterity": document.getElementById("form_dex").value,
-        "constitution": document.getElementById("form_con").value,
-        "intelligence": document.getElementById("form_int").value,
-        "wisdom": document.getElementById("form_wis").value,
-        "charisma": document.getElementById("form_cha").value
+        "name"              : getValue("form_name"),
+        "level"             : getValue("form_lvl"),
+        "max_hp"            : getValue("form_hp"),
+        "curr_hp"           : getValue("form_hp"),
+        "ac"                : getValue("form_ac"),
+        "alignment"         : getValue("form_align"),
+        "strength"          : getValue("form_str"),
+        "dexterity"         : getValue("form_dex"),
+        "constitution"      : getValue("form_con"),
+        "intelligence"      : getValue("form_int"),
+        "wisdom"            : getValue("form_wis"),
+        "charisma"          : getValue("form_cha"),
+        "acrobatics"        : getChecked("form_acrobatics"),
+        "animalhandling"    : getChecked("form_animalhandling"),
+        "arcana"            : getChecked("form_arcana"),
+        "athletics"         : getChecked("form_athletics"),
+        "deception"         : getChecked("form_deception"),
+        "history"           : getChecked("form_history"),
+        "insight"           : getChecked("form_insight"),
+        "intimidation"      : getChecked("form_intimidation"),
+        "investigation"     : getChecked("form_investigation"),
+        "medicine"          : getChecked("form_medicine"),
+        "nature"            : getChecked("form_nature"),
+        "perception"        : getChecked("form_perception"),
+        "performance"       : getChecked("form_performance"),
+        "persuasion"        : getChecked("form_persuasion"),
+        "religion"          : getChecked("form_religion"),
+        "sleightofhand"     : getChecked("form_sleightofhand"),
+        "stealth"           : getChecked("form_stealth"),
+        "survival"          : getChecked("form_survival"),
+        "str_prof"          : getChecked("form_strprof"),
+        "dex_prof"          : getChecked("form_dexprof"),
+        "con_prof"          : getChecked("form_conprof"),
+        "int_prof"          : getChecked("form_intprof"),
+        "wis_prof"          : getChecked("form_wisprof"),
+        "cha_prof"          : getChecked("form_chaprof"),
+        "proficiency"       : getValue("form_proficiency"),
+        "passive_wisdom"    : getValue("form_passwis"),
+        "spell_save"        : getValue("form_spellsave")
     };
 
     let raw_chars = fs.readFileSync(CHAR_PATH, 'utf8');
     if (raw_chars.length < 1) {
-        fs.writeFileSync(CHAR_PATH, "[" + JSON.stringify(char) + "]", "utf-8");
+        fs.writeFileSync(CHAR_PATH, "[" + JSON.stringify(char, null, 4) + "]", "utf-8");
     }
     else {
-        raw_chars = "[" + JSON.stringify(char) + "," + raw_chars.slice(1);
+        raw_chars = "[" + JSON.stringify(char, null, 4) + "," + raw_chars.slice(1);
         fs.writeFileSync(CHAR_PATH, raw_chars, "utf-8");
     }
 }
@@ -104,31 +135,67 @@ function createCharacterItem(char) {
             + '<div class="col-sm-4">'
                 + '<canvas id="attribute_chart" width="400" height="400"></canvas>'
             + '</div><div class="col-sm-4">'
+                + '<h3>Saving Throws</h3>'
+                + '<ul class="list-group">'
+                    + '<li class="list-group-item">' + dispSave("Strength", char.str_prof, "strength", char) + '</li>'
+                    + '<li class="list-group-item">' + dispSave("Dexterity", char.dex_prof, "dexterity", char) + '</li>'
+                    + '<li class="list-group-item">' + dispSave("Constitution", char.con_prof, "constitution", char) + '</li>'
+                    + '<li class="list-group-item">' + dispSave("Intelligence", char.int_prof, "intelligence", char) + '</li>'
+                    + '<li class="list-group-item">' + dispSave("Wisdom", char.wis_prof, "wisdom", char) + '</li>'
+                    + '<li class="list-group-item">' + dispSave("Charisma", char.cha_prof, "charisma", char) + '</li>'
+                + '</ul>'
+                + '<div class="row push-down">'
+                    + '<div class="col-sm-6 fill-right">'
+                        + '<ul class="list-group">'
+                            + '<li class="list-group-item">Passive Wisdom: +' + char.passive_wisdom + '</li>'
+                        + '</ul></div>'
+                    + '<div class="col-sm-6 fill-left"><ul class="list-group">'
+                            + '<li class="list-group-item">Spell Save DC: ' + char.spell_save + '</li>'
+                        + '</ul></div>'
+                + '</div>'
             + '</div><div class="col-sm-4">'
-                + '<h3>Skills (no proficiency)</h3>'
+                + '<h3>Skills</h3>'
                 + '<div class="row"><div class="col-sm-6">'
                     + '<ul class="list-group">'
-                        + '<li class="list-group-item">Acrobatics: ' + modifier(char.dexterity) + '</li>'
-                        + '<li class="list-group-item">Animal Handling: ' + modifier(char.wisdom) + '</li>'
-                        + '<li class="list-group-item">Arcana: ' + modifier(char.intelligence) + '</li>'
-                        + '<li class="list-group-item">Athletics: ' + modifier(char.strength) + '</li>'
-                        + '<li class="list-group-item"><b>Deception: ' + modifier(char.charisma) + '</b></li>'
-                        + '<li class="list-group-item">History: ' + modifier(char.intelligence) + '</li>'
-                        + '<li class="list-group-item">Insight: ' + modifier(char.wisdom) + '</li>'
-                        + '<li class="list-group-item">Intimidation: ' + modifier(char.charisma) + '</li>'
-                        + '<li class="list-group-item">Investigation: ' + modifier(char.intelligence) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Acrobatics", char.acrobatics, "dexterity", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Animal Handling", char.animalhandling, "wisdom", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Arcana", char.arcana, "intelligence", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Athletics", char.athletics, "strength", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Deception", char.deception, "charisma", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("History", char.history, "intelligence", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Insight", char.insight, "wisdom", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Intimidation", char.intimidation, "charisma", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Investigation", char.investigation, "intelligence", char) + '</li>'
                     + '</ul>'
                 + '</div><div class="col-sm-6">'
                     + '<ul class="list-group">'
-                        + '<li class="list-group-item">Medicine: ' + modifier(char.wisdom) + '</li>'
-                        + '<li class="list-group-item">Nature: ' + modifier(char.intelligence) + '</li>'
-                        + '<li class="list-group-item">Perception: ' + modifier(char.wisdom) + '</li>'
-                        + '<li class="list-group-item">Performance: ' + modifier(char.charisma) + '</li>'
-                        + '<li class="list-group-item">Persuasion: ' + modifier(char.charisma) + '</li>'
-                        + '<li class="list-group-item">Religion: ' + modifier(char.intelligence) + '</li>'
-                        + '<li class="list-group-item">Sleight of Hand: ' + modifier(char.dexterity) + '</li>'
-                        + '<li class="list-group-item">Stealth: ' + modifier(char.dexterity) + '</li>'
-                        + '<li class="list-group-item">Survival: ' + modifier(char.wisdom) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Medicine", char.medicine, "wisdom", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Nature", char.nature, "intelligence", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Perception", char.perception, "wisdom", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Performance", char.performance, "charisma", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Persuasion", char.persuasion, "charisma", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Religion", char.religion, "intelligence", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Sleight of Hand", char.sleightofhand, "dexterity", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Stealth", char.stealth, "dexterity", char) + '</li>'
+                        + '<li class="list-group-item">' 
+                            + dispSkill("Survival", char.survival, "wisdom", char) + '</li>'
             + '</ul></div></div></div>'
         + '</div>';
     /* Populate the polar area chart */
@@ -169,8 +236,8 @@ function createCharacterItem(char) {
 /*  ======================================================
     =   Calculate the modifier for a given attribute value
     ====================================================== */
-function modifier(attribute) {
-    let value = (~~((attribute - 10) / 2));
+function modifier(attribute, prof) {
+    let value = (~~((attribute - 10) / 2)) + prof;
     if (value >= 0) {
         value = "+" + value;
     }
@@ -192,4 +259,34 @@ function updateHP(char) {
     else {
         document.getElementById("hp_bar").setAttribute("class", 'progress-bar bg-success hp-bar');
     }
+}
+
+function getValue(id) {
+    return document.getElementById(id).value;
+}
+
+function getChecked(id) {
+    return document.getElementById(id).checked;
+}
+
+function dispSave(name, prof, attribute, char) {
+    let root = name + ": ";
+    if (prof) {
+        root = "<b>" + root + modifier(char[attribute], parseInt(char.proficiency)) + "</b>";
+    }
+    else {
+        root = root + modifier(char[attribute], 0);
+    }
+    return root;
+}
+
+function dispSkill(name, prof, attribute, char) {
+    let root = name + ": ";
+    if (prof) {
+        root = "<b>" + root + modifier(char[attribute], parseInt(char.proficiency)) + "</b>";
+    }
+    else {
+        root = root + modifier(char[attribute], 0);
+    }
+    return root;
 }

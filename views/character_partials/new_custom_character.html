@@ -5,19 +5,19 @@
             <input type="text" class="form-control" id="form_name">
         </div>
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label for="form_lvl">Level</label>
                 <input type="number" class="form-control" id="form_lvl">
             </div>
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label for="form_hp">Max HP</label>
                 <input type="number" class="form-control" id="form_hp">
             </div>
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label for="form_ac">Armor Class</label>
                 <input type="number" class="form-control" id="form_ac">
             </div>
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label for="form_align">Alignment</label>
                 <select id="form_align" class="form-control">
                     <option>Lawful Good</option>
@@ -33,29 +33,159 @@
             </div>
         </div>
         <div class="form-group row">
-            <div class="col-2">
+            <div class="col-sm-2 form-attribute">
                 <label for="form_str">Strength</label>
                 <input type="number" class="form-control" id="form_str">
             </div>
-            <div class="col-2">
+            <div class="col-sm-2 form-attribute">
                 <label for="form_dex">Dexterity</label>
                 <input type="number" class="form-control" id="form_dex">
             </div>
-            <div class="col-2">
+            <div class="col-sm-2 form-attribute">
                 <label for="form_con">Constitution</label>
                 <input type="number" class="form-control" id="form_con">
             </div>
-            <div class="col-2">
+            <div class="col-sm-2 form-attribute">
                 <label for="form_int">Intelligence</label>
                 <input type="number" class="form-control" id="form_int">
             </div>
-            <div class="col-2">
+            <div class="col-sm-2 form-attribute">
                 <label for="form_wis">Wisdom</label>
                 <input type="number" class="form-control" id="form_wis">
             </div>
-            <div class="col-2">
+            <div class="col-sm-2 form-attribute">
                 <label for="form_cha">Charisma</label>
                 <input type="number" class="form-control" id="form_cha">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-8 center-div">
+                <span class="center-div">Proficient Skills</span>
+                <div class="row text-left">
+                    <div class="col-sm-4 form-group center-horizontal">
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_acrobatics">
+                            <label class="form-check-label" for="form_acrobatics">Acrobatics</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_animalhandling">
+                            <label class="form-check-label" for="form_animalhandling">Animal Handling</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_arcana">
+                            <label class="form-check-label" for="form_arcana">Arcana</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_athletics">
+                            <label class="form-check-label" for="form_athletics">Athletics</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_deception">
+                            <label class="form-check-label" for="form_deception">Deception</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_history">
+                            <label class="form-check-label" for="form_history">History</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-group center-horizontal">
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_insight">
+                            <label class="form-check-label" for="form_insight">Insight</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_intimidation">
+                            <label class="form-check-label" for="form_intimidation">Intimidation</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_investigation">
+                            <label class="form-check-label" for="form_investigation">Investigation</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_medicine">
+                            <label class="form-check-label" for="form_medicine">Medicine</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_nature">
+                            <label class="form-check-label" for="form_nature">Nature</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_perception">
+                            <label class="form-check-label" for="form_perception">Perception</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-group center-horizontal">
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_performance">
+                            <label class="form-check-label" for="form_performance">Performance</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_persuasion">
+                            <label class="form-check-label" for="form_persuasion">Persuasion</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_religion">
+                            <label class="form-check-label" for="form_religion">Religion</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_sleightofhand">
+                            <label class="form-check-label" for="form_sleightofhand">Sleight of Hand</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_stealth">
+                            <label class="form-check-label" for="form_stealth">Stealth</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_survival">
+                            <label class="form-check-label" for="form_survival">Survival</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <span class="center-div">Saving Throws</span>
+                <div class="row text-left">
+                    <div class="form-group center-horizontal">
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_strprof">
+                            <label class="form-check-label" for="form_strprof">Strength</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_dexprof">
+                            <label class="form-check-label" for="form_dexprof">Dexterity</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_conprof">
+                            <label class="form-check-label" for="form_conprof">Constitution</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_intprof">
+                            <label class="form-check-label" for="form_intprof">Intelligence</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_wisprof">
+                            <label class="form-check-label" for="form_wisprof">Wisdom</label>
+                        </div>
+                        <div class="form-check form-skill">
+                            <input class="form-check-input" type="checkbox" id="form_chaprof">
+                            <label class="form-check-label" for="form_chaprof">Charisma</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group row">
+                    <label for="form_proficiency">Proficiency</label>
+                    <input type="number" class="form-control" id="form_proficiency">
+                </div>
+                <div class="form-group row">
+                    <label for="form_passwis">Passive Wisdom</label>
+                    <input type="number" class="form-control" id="form_passwis">
+                </div>
+                <div class="form-group row">
+                    <label for="form_spellsave">Spell Save DC</label>
+                    <input type="number" class="form-control" id="form_spellsave">
+                </div>
             </div>
         </div>
         <div class="form-group">

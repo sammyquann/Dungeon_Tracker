@@ -6,7 +6,7 @@ html, body {
     background-color: #FFFFFF !important;
   }
 
-.col-sm-2 {
+.form-attribute {
     padding: 20px 15px 10px 30px !important;
 }
 
@@ -25,7 +25,7 @@ html, body {
 }
 
 .push-down {
-    margin-top: 3em;
+    margin-top: 1.5em;
 }
 
 .new-character-options {
@@ -57,7 +57,12 @@ html, body {
 .character-btn {
     margin: 5px 0;
 }
+
 .stat-row {
     box-shadow: 0px 0px 12px 0px;
     margin: 10px auto !important;
+}
+
+.form-skill {
+    padding-top: 0.75em;
 }
